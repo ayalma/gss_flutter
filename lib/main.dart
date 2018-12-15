@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter\_localizations/flutter\_localizations.dart';
 import 'package:gss_flutter/DemoLocalizations.dart';
+import 'package:gss_flutter/dynamic_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(GssApp(child: MyApp()));
@@ -39,18 +40,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      supportedLocales: [
-        const Locale('fa', 'IR'),
-        const Locale('en', 'US'),
-
-      ],
-      localizationsDelegates: [
-        const DemoLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      /*localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
+    return DynamicApp(
+      defaultLocale: Locale("en"),
+      themeDataWithBrightnessBuilder: (brightness) => new ThemeData(
+            primarySwatch: Colors.indigo,
+            brightness: brightness,
+          ),
+      dynamicWidgetBuilder: (context, themeData, locale) {
+        return MaterialApp(
+          locale: locale,
+          supportedLocales: [
+            const Locale('fa', 'IR'),
+            const Locale('en', 'US'),
+          ],
+          localizationsDelegates: [
+            const DemoLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          /*localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
         for (Locale supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale.languageCode || supportedLocale.countryCode == locale.countryCode) {
             return supportedLocale;
@@ -59,27 +67,29 @@ class _MyAppState extends State<MyApp> {
 
         return supportedLocales.first;
       },*/
-      localeResolutionCallback:
-          (Locale locale, Iterable<Locale> supportedLocales) {
-        if (locale == null) {
-          debugPrint("*language locale is null!!!");
-          return supportedLocales.first;
-        }
+          localeResolutionCallback:
+              (Locale locale, Iterable<Locale> supportedLocales) {
+            if (locale == null) {
+              debugPrint("*language locale is null!!!");
+              return supportedLocales.first;
+            }
 
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode ||
-              supportedLocale.countryCode == locale.countryCode) {
-            debugPrint("*language ok $supportedLocale");
-            return supportedLocale;
-          }
-        }
+            for (Locale supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode ||
+                  supportedLocale.countryCode == locale.countryCode) {
+                debugPrint("*language ok $supportedLocale");
+                return supportedLocale;
+              }
+            }
 
-        debugPrint("*language to fallback ${supportedLocales.first}");
-        return supportedLocales.first;
+            debugPrint("*language to fallback ${supportedLocales.first}");
+            return supportedLocales.first;
+          },
+          title: GssApp.of(context).isDark.toString(),
+          theme: themeData,
+          home: MyHomePage(title: "test"),
+        );
       },
-      title: GssApp.of(context).isDark.toString(),
-      theme: _buildTheme(context),
-      home: MyHomePage(title: "test"),
     );
   }
 
@@ -173,7 +183,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               lastDate: DateTime(2225).toLocal(),
                               textDirection: TextDirection.rtl);
                         }),
-                  )
+                  ),
+
                 ],
               ),
             ),
@@ -197,13 +208,43 @@ class _ShowTestState extends State<ShowTest> {
             value: MyApp.of(context).theme,
             onChanged: (isChecked) async {
               setState(() {
-                MyApp.of(context).setTheme(isChecked);
+                MyApp.of(context).theme = isChecked;
+                DynamicApp.of(context).setBrightness(
+                    (isChecked) ? Brightness.dark : Brightness.light);
+                DynamicApp.of(context).setLanguage("fa");
               });
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.setBool('app_theme', isChecked);
             }),
       ],
     );
     //return Text(GssApp.of(context).isDark.toString());
   }
+}
+
+class LanguageSwitch extends StatefulWidget {
+  @override
+  _LanguageSwitchState createState() => _LanguageSwitchState();
+}
+
+class _LanguageSwitchState extends State<LanguageSwitch> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<Language>(
+        value: Language("fa", "فارسی"),
+        items: [
+          DropdownMenuItem<Language>(child: Text("text"),),
+          DropdownMenuItem<Language>(child: Text("text"),),
+          DropdownMenuItem<Language>(child: Text("text"),),
+          DropdownMenuItem<Language>(child: Text("text"),),
+          DropdownMenuItem<Language>(child: Text("text"),),
+        ],
+        onChanged: (selected) {},
+        hint: Text("Select language"));
+  }
+}
+
+class Language {
+  final String key;
+  final String value;
+
+  Language(this.key, this.value);
 }
