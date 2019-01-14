@@ -139,6 +139,8 @@ class _HomePageState extends State<HomePage> {
                                         child: Column(
                                           children: <Widget>[
                                             Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Container(
                                                   child: ClipRRect(
@@ -151,24 +153,38 @@ class _HomePageState extends State<HomePage> {
                                                   height: 48.0,
                                                   width: 48.0,
                                                 ),
-                                                SizedBox(width: 16.0,),
+                                                SizedBox(
+                                                  width: 16.0,
+                                                ),
                                                 Expanded(
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text("Ali mohammadi"),
                                                       Icon(Icons.favorite)
                                                     ],
-                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                   ),
                                                 ),
-                                                Text("14:47, 16 jan",style: Theme.of(context).textTheme.caption,)
+                                                Text(
+                                                  "14:47, 16 jan",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption,
+                                                )
                                               ],
                                             ),
                                             SizedBox(
                                               height: 16.0,
                                             ),
                                             Text(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+                                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .body1,
+                                              textAlign: TextAlign.justify,
+                                            ),
                                           ],
                                         ),
                                       ),
