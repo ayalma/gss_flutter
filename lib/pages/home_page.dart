@@ -8,7 +8,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _tabs = ["first", "second", "third"];
+  List<String> _tabs = ["detail's", "comment's"];
 
   @override
   Future initState() {
@@ -41,9 +41,17 @@ class _HomePageState extends State<HomePage> {
                 pinned: true,
                 floating: false,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Image.asset(
-                    "assets/board_walk.jpg",
-                    fit: BoxFit.cover,
+                  background: PageView(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/board_walk.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        "assets/dusk_waves.jpg",
+                        fit: BoxFit.cover,
+                      )
+                    ],
                   ),
                 ),
                 expandedHeight: 250.0,
@@ -65,30 +73,34 @@ class _HomePageState extends State<HomePage> {
           // find the NestedScrollView.
           builder: (BuildContext context) {
             return Column(
-
               children: <Widget>[
                 MyOverlapInjector(
                   handle:
-                  NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 4.0, left: 4.0, right: 4.0),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        subtitle: Text("hello"),
-                        title: Text("test"),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: CircleAvatar(
+                        child: Text('G'),
                       ),
-                      TabBar(
-                        indicatorColor: Theme.of(context).accentColor,
-                        labelColor: Theme.of(context).textTheme.button.color,
-                        // These are the widgets to put in each tab in the tab bar.
-                        tabs: _tabs
-                            .map((String name) => Tab(text: name))
-                            .toList(),
-                      )
-                    ],
-                  ),
+                      subtitle: Text("Abhar city mem"),
+                      title: Text("abhar is beutifull"),
+                      trailing: Column(
+                        children: <Widget>[
+                          Icon(Icons.favorite),
+                          Text('25'),
+                        ],
+                      ),
+                    ),
+                    TabBar(
+                      indicatorColor: Theme.of(context).accentColor,
+                      labelColor: Theme.of(context).textTheme.button.color,
+                      // These are the widgets to put in each tab in the tab bar.
+                      tabs:
+                          _tabs.map((String name) => Tab(text: name)).toList(),
+                    )
+                  ],
                 ),
                 Divider(),
                 Expanded(
@@ -115,24 +127,50 @@ class _HomePageState extends State<HomePage> {
                               // fixed-height list items, hence the use of
                               // SliverFixedExtentList. However, one could use any
                               // sliver widget here, e.g. SliverList or SliverGrid.
-                              sliver: SliverFixedExtentList(
+                              sliver: SliverList(
                                 // The items in this example are fixed to 48 pixels
                                 // high. This matches the Material Design spec for
                                 // ListTile widgets.
-                                itemExtent: 48.0,
                                 delegate: SliverChildBuilderDelegate(
                                   (BuildContext context, int index) {
-                                    // This builder is called for each child.
-                                    // In this example, we just number each list item.
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: IconButton(
-                                        icon:
-                                            Icon(Icons.add, color: Colors.red),
-                                        onPressed: () {},
-                                        color: Colors.amber,
-                                        highlightColor: Colors.indigo,
-                                        splashColor: Colors.indigo,
+                                    return Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  child: ClipRRect(
+                                                    child: Image.asset(
+                                                        "assets/board_walk.jpg"),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            24.0),
+                                                  ),
+                                                  height: 48.0,
+                                                  width: 48.0,
+                                                ),
+                                                SizedBox(width: 16.0,),
+                                                Expanded(
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      Text("Ali mohammadi"),
+                                                      Icon(Icons.favorite)
+                                                    ],
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                  ),
+                                                ),
+                                                Text("14:47, 16 jan",style: Theme.of(context).textTheme.caption,)
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 16.0,
+                                            ),
+                                            Text(
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+                                          ],
+                                        ),
                                       ),
                                     );
                                   },
